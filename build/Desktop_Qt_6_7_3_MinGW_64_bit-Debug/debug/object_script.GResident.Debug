@@ -1,0 +1,13 @@
+debug/connexion.o
+debug/employe.o
+debug/main.o
+debug/gresident.o
+debug/resident.o
+debug/serviceitem.o
+debug/crud.o
+debug/vehicle.o
+debug/smartavailability.o
+debug/voicetotext.o
+debug/moc_gresident.o
+debug/moc_smartavailability.o
+debug/moc_voicetotext.o

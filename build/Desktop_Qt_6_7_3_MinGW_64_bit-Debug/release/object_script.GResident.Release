@@ -1,0 +1,13 @@
+release/connexion.o
+release/employe.o
+release/main.o
+release/gresident.o
+release/resident.o
+release/serviceitem.o
+release/crud.o
+release/vehicle.o
+release/smartavailability.o
+release/voicetotext.o
+release/moc_gresident.o
+release/moc_smartavailability.o
+release/moc_voicetotext.o

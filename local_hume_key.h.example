@@ -1,0 +1,20 @@
+/*
+ Copy this file to local_hume_key.h and fill in your Hume API key.
+ Make sure to keep local_hume_key.h in your .gitignore (the project already ignores local_hume_key.h),
+ or add it to a different local ignore list to avoid committing your secret.
+
+ Example:
+   #define HUME_API_KEY "sk-live-xxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+ After copying, you can either #include "local_hume_key.h" at the top of
+ voicetotext.cpp or define HUME_API_KEY in qmake (see README_HUME.md).
+*/
+
+#ifndef LOCAL_HUME_KEY_H
+#define LOCAL_HUME_KEY_H
+
+// Define HUME_API_KEY as a plain string literal. Replace the placeholder with your key.
+// IMPORTANT: Do NOT commit your real key to version control.
+#define HUME_API_KEY "YOUR_API_KEY_HERE"
+
+#endif // LOCAL_HUME_KEY_H

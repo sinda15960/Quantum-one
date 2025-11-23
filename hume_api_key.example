@@ -1,0 +1,5 @@
+# Copy this file to .hume_api_key (or 'hume_api_key') and put your Hume API key on the first line.
+# Example:
+# nCkDcVxCcO78RGwrW2UvZxHJaA0PAxAh7t0tv0kW6TikIudO
+
+# Keep this file out of version control and do NOT commit a secret.
