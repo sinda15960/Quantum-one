@@ -1,0 +1,131 @@
+#include <Servo.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <Keypad.h>
+
+// Définition des objets et des pins
+Servo myservo;
+const int servoPin = 10;             // Pin du servo moteur
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Écran LCD I2C (adresse 0x27)
+
+// Modifiez la taille du clavier pour 4x4
+const byte ROWS = 4;                // 4 lignes
+const byte COLS = 4;                // 4 colonnes
+char keys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+
+// Pins connectées aux lignes et colonnes du clavier
+byte rowPins[ROWS] = {2, 3, 4, 5};  // Ajustez si nécessaire
+byte colPins[COLS] = {6, 7, 8, 9};  // Assurez-vous que les colonnes couvrent jusqu'au pin 9
+
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+String enteredCode = "";            // Stockage du code saisi
+String employeeName = "";  // Variable to store the employee name
+
+void setup() {
+  Serial.begin(9600);               // Initialisation de la communication série
+  myservo.attach(servoPin);
+  myservo.write(0);                 // Position initiale (porte fermée)
+
+  lcd.begin();                      // Initialisation de l'écran LCD
+  lcd.backlight();                  // Allumer le rétroéclairage
+  lcd.setCursor(0, 0);
+  lcd.print("Bienvenue Entrez ");
+    lcd.setCursor(0, 1);
+      lcd.print("votre code ");
+}
+
+void loop() {
+  char key = keypad.getKey();  // Lecture de la touche appuyée
+
+  if (key) {  // Si une touche est appuyée
+
+
+    if (key == '*') {
+      // Envoyer le code entré caractère par caractère
+      sendCode();
+      enteredCode = "";  // Réinitialisation du code saisi
+    } else {
+      enteredCode += key;                 // Ajouter la touche au code saisi
+
+    }
+  }
+//Fonction qui affiche le nom du employe dans le lcd et qui ouvre le port , bien si le id entrer est vérifer et existe dans le Bd dans le table employe column ID_EMPLOYE
+ while (Serial.available()) {
+    char c = Serial.read();
+    if (c == '/') {
+     ouvrirPorte();
+       lcd.setCursor(0, 0);
+       lcd.print("Bienvenue Mr/Mme");
+         lcd.setCursor(0, 1);
+      lcd.print(employeeName);
+      delay(2000);
+     fermerPorte() ;
+     lcd.clear();
+       lcd.setCursor(0, 0);
+  lcd.print("Bienvenue Entrez ");
+    lcd.setCursor(0, 1);
+      lcd.print("votre code ");
+      employeeName = "";
+
+    }
+    else 
+    if(c=='#')
+    {
+        lcd.setCursor(0, 0);
+       lcd.print("Le code ");
+         lcd.setCursor(0, 1);
+        lcd.print("est incorrecte");
+        delay(2000);
+       lcd.clear();
+         lcd.setCursor(0, 0);
+  lcd.print("Bienvenue Entrez ");
+    lcd.setCursor(0, 1);
+      lcd.print("votre code ");
+      employeeName = "";
+
+    }
+    else
+    {
+            employeeName += c;  // Append character to the string
+
+    }
+  }
+  delay(100);  // Petit délai pour éviter une boucle trop rapide
+}
+
+// Fonction pour envoyer le code caractère par caractère
+void sendCode() {
+  lcd.clear();
+  lcd.print("Verifying Code:");
+  for (int i = 0; i < enteredCode.length(); i++) {
+    Serial.print(enteredCode[i]); 
+    delay(500);                          // Petit délai entre les caractères
+  }
+  Serial.print('*');
+  Serial.println();                      // Nouvelle ligne après le code
+}
+
+
+
+// Fonction pour ouvrir la porte progressivement (non utilisé dans le code actuel)
+void ouvrirPorte() {
+  for (int pos = 0; pos <= 180; pos += 2) {
+    myservo.write(pos);
+    delay(10);
+  }
+}
+
+// Fonction pour fermer la porte progressivement (non utilisé dans le code actuel)
+void fermerPorte() {
+  for (int pos = 180; pos >= 0; pos -= 2) {
+    myservo.write(pos);
+    delay(10);
+  }
+}
