@@ -1,14 +1,19 @@
+#include "mainwindow.h"
+#include "connection.h"
 #include <QApplication>
-#include "gresident.h"
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QApplication a(argc, argv);
 
-    GResident w;
-    w.setWindowTitle("Gestion des Résidents");
-    w.resize(1600, 1000);
+    Connection c;
+    if (!c.createconnect()) {
+        QMessageBox::critical(nullptr, "Erreur", "Connexion à la base de données échouée !");
+        return -1;
+    }
+
+    MainWindow w;
     w.show();
-
-    return app.exec();
+    return a.exec();
 }
